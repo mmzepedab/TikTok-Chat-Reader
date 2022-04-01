@@ -1,12 +1,14 @@
 body {
     font-family:Arial, Helvetica, sans-serif;
     min-width: 800px;
+    background-color: black;
 }
 
 h1 {
-    font-size: 1.8em;
+    font-size: 2em;
     margin-top: 0px;
     margin-bottom: 0px;
+    color: rgb(124, 124, 0);
 }
 
 a {
@@ -14,7 +16,7 @@ a {
 }
 
 .head {
-    margin-bottom: 15px;
+    margin-bottom: 0px;
 }
 
 .subTitle {
@@ -23,8 +25,16 @@ a {
 }
 
 .usernamelink {
-    color: #18508f;
+    color: #ffffff;
     text-decoration: none;
+    font-size: 3em;
+}
+
+.businessClassLink {
+    color: #000000;
+    text-decoration: none;
+    font-size: 3em;
+    background-color: yellow;
 }
 
 #roomUserText {
@@ -34,7 +44,8 @@ a {
 
 #roomStats {
     width: 100%;
-    text-align: right;
+    text-align: left;
+    color: #58a6ff;
 }
 
 #roomStats b {
@@ -50,7 +61,8 @@ a {
 }
 
 .containerheader {
-    text-align: center;
+    text-align: left;
+    font-size: 3em;
 }
 
 .chatcontainer, .giftcontainer {
@@ -61,7 +73,7 @@ a {
 
 .chatcontainer {
     min-width: 400px;
-    max-width: calc(100vw - 430px);
+    /* max-width: calc(100vw - 430px); */
 }
 
 .giftcontainer {
@@ -69,8 +81,8 @@ a {
 }
 
 .miniprofilepicture {
-    height: 20px;
-    width: 20px;
+    height: 100px;
+    width: 100px;
 }
 
 .gifticon {

@@ -4,6 +4,7 @@ let viewerCount = 0;
 let likeCount = 0;
 let diamondsCount = 0;
 
+/*
 $(document).ready(() => {
     $('#connectButton').click(connect);
     $('#uniqueIdInput').on('keyup', function (e) {
@@ -11,10 +12,15 @@ $(document).ready(() => {
             connect();
         }
     });
+})*/
+
+$(document).ready(() => {
+    connect();
 })
 
 function connect() {
-    let uniqueId = $('#uniqueIdInput').val();
+    //let uniqueId = $('#uniqueIdInput').val();
+    let uniqueId = "elmeichon";
     if (uniqueId !== '') {
         ioConnection.emit('setUniqueId', uniqueId, {
             enableExtendedGiftInfo: true
@@ -30,11 +36,17 @@ function sanitize(text) {
 }
 
 function updateRoomStats() {
-    $('#roomStats').html(`Viewers: <b>${viewerCount.toLocaleString()}</b> Likes: <b>${likeCount.toLocaleString()}</b> Earned Diamonds: <b>${diamondsCount.toLocaleString()}</b>`)
+    //$('#roomStats').html(`Viewers: <b>${viewerCount.toLocaleString()}</b> Likes: <b>${likeCount.toLocaleString()}</b> Earned Diamonds: <b>${diamondsCount.toLocaleString()}</b>`)
+    $('#roomStats').html(`PASAJEROS: <b>${viewerCount.toLocaleString()}</b> `)
 }
 
 function generateUsernameLink(data) {
-    return `<a class="usernamelink" href="https://www.tiktok.com/@${data.uniqueId}" target="_blank">${data.uniqueId}</a>`;
+
+    if (data.displayType.includes('share')) {
+        return `<a class="businessClassLink" href="https://www.tiktok.com/@${data.uniqueId}" target="_blank">${data.uniqueId}</a>`;
+    } else {
+        return `<a class="usernamelink" href="https://www.tiktok.com/@${data.uniqueId}" target="_blank">${data.uniqueId}</a>`;
+    }    
 }
 
 function isPendingStreak(data) {
@@ -139,7 +151,7 @@ ioConnection.on('roomUser', (msg) => {
 // like stats
 ioConnection.on('like', (msg) => {
     if (typeof msg.likeCount === 'number') {
-        addChatItem('#447dd4', msg, msg.label.replace('{0:user}', '').replace('likes', `${msg.likeCount} likes`))
+        //addChatItem('#447dd4', msg, msg.label.replace('{0:user}', '').replace('likes', `${msg.likeCount} likes`))
     }
 
     if (typeof msg.totalLikeCount === 'number') {
@@ -159,12 +171,12 @@ ioConnection.on('member', (msg) => {
 
     setTimeout(() => {
         joinMsgDelay -= addDelay;
-        addChatItem('#21b2c2', msg, 'joined', true);
+        /*addChatItem('#21b2c2', msg, 'joined', true);*/
     }, joinMsgDelay);
 })
 
 ioConnection.on('chat', (msg) => {
-    addChatItem('', msg, msg.comment);
+    //addChatItem('', msg, msg.comment);
 })
 
 ioConnection.on('gift', (data) => {
@@ -178,6 +190,6 @@ ioConnection.on('gift', (data) => {
 
 // share, follow
 ioConnection.on('social', (data) => {
-    let color = data.displayType.includes('follow') ? '#ff005e' : '#2fb816';
+    let color = data.displayType.includes('share') ? '#ff005e' : '#2fb816';
     addChatItem(color, data, data.label.replace('{0:user}', ''));
 })
