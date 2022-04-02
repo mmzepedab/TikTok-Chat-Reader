@@ -1,5 +1,6 @@
 let ioConnection = new io();
 
+let passengersCount = 0;
 let viewerCount = 0;
 let likeCount = 0;
 let diamondsCount = 0;
@@ -37,12 +38,12 @@ function sanitize(text) {
 
 function updateRoomStats() {
     //$('#roomStats').html(`Viewers: <b>${viewerCount.toLocaleString()}</b> Likes: <b>${likeCount.toLocaleString()}</b> Earned Diamonds: <b>${diamondsCount.toLocaleString()}</b>`)
-    $('#roomStats').html(`PASAJEROS: <b>${viewerCount.toLocaleString()}</b> `)
+    $('#roomStats').html(`PASAJEROS: <b>${passengersCount.toLocaleString()}</b> `)
 }
 
 function generateUsernameLink(data) {
 
-    if (data.displayType.includes('share')) {
+    if (data.displayType === 'share') {
         return `<a class="businessClassLink" href="https://www.tiktok.com/@${data.uniqueId}" target="_blank">${data.uniqueId}</a>`;
     } else {
         return `<a class="usernamelink" href="https://www.tiktok.com/@${data.uniqueId}" target="_blank">${data.uniqueId}</a>`;
@@ -171,12 +172,18 @@ ioConnection.on('member', (msg) => {
 
     setTimeout(() => {
         joinMsgDelay -= addDelay;
-        /*addChatItem('#21b2c2', msg, 'joined', true);*/
+        //addChatItem('#21b2c2', msg, 'joined', true);
     }, joinMsgDelay);
 })
 
 ioConnection.on('chat', (msg) => {
-    //addChatItem('', msg, msg.comment);
+    console.log(`${msg.uniqueId} (userId:${msg.userId}) writes: ${msg.comment}`);
+    
+    if(msg.comment === "3" || msg.comment === "4") {
+        passengersCount += 1;
+        updateRoomStats();
+        addChatItem('white', msg, msg.comment);
+    }
 })
 
 ioConnection.on('gift', (data) => {
@@ -191,5 +198,5 @@ ioConnection.on('gift', (data) => {
 // share, follow
 ioConnection.on('social', (data) => {
     let color = data.displayType.includes('share') ? '#ff005e' : '#2fb816';
-    addChatItem(color, data, data.label.replace('{0:user}', ''));
+    //addChatItem(color, data, data.label.replace('{0:user}', ''));
 })

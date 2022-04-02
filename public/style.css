@@ -73,7 +73,7 @@ a {
 
 .chatcontainer {
     min-width: 400px;
-    /* max-width: calc(100vw - 430px); */
+    max-width: calc(100vw - 430px); 
 }
 
 .giftcontainer {
