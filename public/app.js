@@ -22,19 +22,9 @@ $(document).ready(() => {
   textOverlay();
 });
 
-async function textOverlay() {
-  // Reading image
-  const image = await Jimp.read("./images/ticket_empty.jpeg");
-  // Defining the text font
-  const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
-  image.print(font, 10, 350, "MARIO ZEPEDA");
-  // Writing image after processing
-  await image.writeAsync("./images/ticket.jpeg");
-}
-
 function connect() {
   //let uniqueId = $('#uniqueIdInput').val();
-  let uniqueId = "tctekk";
+  let uniqueId = "elmeichon";
   if (uniqueId !== "") {
     ioConnection.emit("setUniqueId", uniqueId, {
       enableExtendedGiftInfo: true,
@@ -52,7 +42,7 @@ function sanitize(text) {
 function updateRoomStats() {
   //$('#roomStats').html(`Viewers: <b>${viewerCount.toLocaleString()}</b> Likes: <b>${likeCount.toLocaleString()}</b> Earned Diamonds: <b>${diamondsCount.toLocaleString()}</b>`)
   $("#roomStats").html(
-    `PASAJEROS: <b>${passengersCount.toLocaleString()}</b> `
+    `PASAJEROS: <b>${passengersCount.toLocaleString()} Escribe: Ticket</b> `
   );
 }
 
@@ -149,7 +139,7 @@ function addTicketItem(color, data, text, summarize) {
                             <h3>SALIDA</h3>
                         </span>
                         <span style="vertical-align: top;">
-                            <h1>TEGUCIGALPA, HONDURAS</h1>
+                            <h1>PANAMA CITY, PANAMA</h1>
                         </span>
                     </td>
                     <td>
@@ -157,7 +147,7 @@ function addTicketItem(color, data, text, summarize) {
                             <h3>DESTINO</h3>
                         </span>
                         <span style="vertical-align: top;">
-                            <h1>BUENOS AIRES, ARGENTINA</h1>
+                            <h1>MEDELLIN, COLOMBIA</h1>
                         </span>
                     </td>
                 </tr>
