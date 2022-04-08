@@ -1,11 +1,15 @@
 let ioConnection = new io();
 
 let passengersCount = 0;
+let passengersBusinessCount = 0;
+let passengersFirstClassCount = 0;
 let viewerCount = 0;
 let likeCount = 0;
 let diamondsCount = 0;
 
 const usersBoughtTicket = [];
+const usersBoughtBusinessTicket = [];
+const usersBoughtFirstClassTicket = [];
 
 /*
 $(document).ready(() => {
@@ -42,7 +46,10 @@ function sanitize(text) {
 function updateRoomStats() {
   //$('#roomStats').html(`Viewers: <b>${viewerCount.toLocaleString()}</b> Likes: <b>${likeCount.toLocaleString()}</b> Earned Diamonds: <b>${diamondsCount.toLocaleString()}</b>`)
   $("#roomStats").html(
-    `PASAJEROS: <b>${passengersCount.toLocaleString()} Escribe: Ticket</b> `
+    `FIRST CLASS(👑): <b>${passengersFirstClassCount.toLocaleString()}</b> BUSINESS(🌹): <b>${passengersBusinessCount.toLocaleString()}</b> 
+    ECONOMY(Ticket): <b>${passengersCount.toLocaleString()}</b> TOTAL PASAJEROS: <b>${
+      passengersCount + passengersFirstClassCount + passengersBusinessCount
+    }</b>`
   );
 }
 
@@ -97,7 +104,7 @@ function addTicketItem(color, data, text, summarize) {
 */
   container.append(`
   <div class=${summarize ? "temporary" : "static"}>
-        <div class="ticketcontainer">
+        <div class="ticketcontainer" style="background-color: ${color}">
         <div class="ticketheader">
             <img class="ticketLogo" src="./images/latam_logo.png">
             <div style="color: white; height: 100%; 
@@ -126,14 +133,19 @@ function addTicketItem(color, data, text, summarize) {
                             <h3>CLASE</h3>
                         </span>
                         <span style="vertical-align: top;">
-                            <h1>ECONOMIA</h1>
+                            <h1>${text}</h1>
                         </span>
                     </td>
                 </tr>
                 <tr>
-                    <td></td>
-
-
+                    <td>
+                    <img class="gifticon" src="${
+                      (
+                        data.extendedGiftInfo?.icon ||
+                        data.extendedGiftInfo?.image
+                      )?.url_list[0]
+                    }">
+                    </td>
                     <td>
                         <span style="vertical-align: top;">
                             <h3>SALIDA</h3>
@@ -152,7 +164,6 @@ function addTicketItem(color, data, text, summarize) {
                     </td>
                 </tr>
             </table>
-            <img src="./images/qr_code.png" class="center" height="100px">
         </div>
     </div>
     </div>
@@ -281,20 +292,38 @@ ioConnection.on("chat", (msg) => {
     if (!usersBoughtTicket.includes(msg.uniqueId)) {
       passengersCount += 1;
       updateRoomStats();
-      addTicketItem("white", msg, msg.comment);
+      addTicketItem("white", msg, "ECONOMY");
       usersBoughtTicket.push(msg.uniqueId);
     }
   }
 });
 
 ioConnection.on("gift", (data) => {
-  addGiftItem(data);
+  if (
+    !usersBoughtBusinessTicket.includes(data.uniqueId) &&
+    data.extendedGiftInfo.name === "Rose"
+  ) {
+    passengersBusinessCount += 1;
+    addTicketItem("aqua", data, "BUSINESS");
+    usersBoughtBusinessTicket.push(data.uniqueId);
+  }
 
+  if (
+    !usersBoughtFirstClassTicket.includes(data.uniqueId) &&
+    data.extendedGiftInfo.name === "Little Crown"
+  ) {
+    passengersFirstClassCount += 1;
+    addTicketItem("gold", data, "FIRST CLASS");
+    usersBoughtFirstClassTicket.push(data.uniqueId);
+  }
+  //addGiftItem(data);
+  /*
   if (!isPendingStreak(data) && data.extendedGiftInfo.diamond_count > 0) {
     diamondsCount +=
       data.extendedGiftInfo.diamond_count * data.gift.repeat_count;
     updateRoomStats();
   }
+  */
 });
 
 // share, follow
